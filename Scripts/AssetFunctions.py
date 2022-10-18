@@ -5,6 +5,7 @@ import os
 # Create an import resource task
 def buildImportTask(filename, destination_path, options=None):
     task = unreal.AssetImportTask()
+
     task.set_editor_property('automated', True)
     task.set_editor_property('destination_name', '')
     task.set_editor_property('destination_path', destination_path)
@@ -23,7 +24,6 @@ def buildStaticMeshImportOptions():
     options.set_editor_property('import_materials', True)
     options.set_editor_property('import_as_skeletal', False)
 
-
     options.static_mesh_import_data.set_editor_property('import_translation', unreal.Vector(50.0, 0.0, 0.0))
     options.static_mesh_import_data.set_editor_property('import_rotation', unreal.Rotator(0.0, 110.0, 0.0))
     options.static_mesh_import_data.set_editor_property('import_uniform_scale', 1.0)
@@ -37,6 +37,7 @@ def buildStaticMeshImportOptions():
 
 def buildskeletalMeshImportOptions():
     options = unreal.FbxImportUI()
+
     options.set_editor_property('import_mesh', True)
     options.set_editor_property('import_textures', False)
     options.set_editor_property('import_materials', True)
@@ -64,6 +65,7 @@ def importSimpleAssets():
 
     texture_task = buildImportTask(texture_tga, '/Game/Texture')
     sound_task = buildImportTask(sound_wav, '/Game/Audio')
+
     executeImportTasks([texture_task, sound_task])
 
 
