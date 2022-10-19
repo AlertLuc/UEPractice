@@ -12,6 +12,7 @@
       <option name="ignoredErrors">
         <list>
           <option value="N806" />
+          <option value="N802" />
         </list>
       </option>
     </inspection_tool>
@@ -30,6 +31,7 @@
           <option value="dict.append" />
           <option value="random.*" />
           <option value="int.*" />
+          <option value="unreal.*" />
         </list>
       </option>
     </inspection_tool>

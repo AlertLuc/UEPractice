@@ -50,6 +50,23 @@ def buildskeletalMeshImportOptions():
     return options
 
 
+# Animation import Settings options
+def buildAnimationImportOptions(skeleton_path):
+    options = unreal.FbxImportUI()
+
+    options.set_editor_property('import_animations', True)
+    options.skeleton = unreal.load_asset(skeleton_path)
+
+    options.anim_sequence_import_data.set_editor_property('import_translation', unreal.Vector(0.0, 0.0, 0.0))
+    options.anim_sequence_import_data.set_editor_property('import_rotation', unreal.Rotator(0.0, 0.0, 0.0))
+    options.anim_sequence_import_data.set_editor_property('import_uniform_scale', 1.0)
+
+    options.anim_sequence_import_data.set_editor_property('animation_length',
+                                                          unreal.FBXAnimationLengthImportType.FBXALIT_EXPORTED_TIME)
+    options.anim_sequence_import_data.set_editor_property('remove_redundant_keys', False)
+    return options
+
+
 # Example Import resources
 def executeImportTasks(tasks):
     unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks(tasks)
@@ -58,7 +75,7 @@ def executeImportTasks(tasks):
             print('Imported: %s' % path)
 
 
-# absolute path,not relative path
+# Absolute path,not relative path
 def importSimpleAssets():
     texture_tga = 'D:/WorkPlace/Scripts/FirstPersonCrosshair.TGA'
     sound_wav = 'D:/WorkPlace/Scripts/FirstPersonTemplateWeaponFire02.WAV'
@@ -79,7 +96,16 @@ def importMeshAssets():
     executeImportTasks([static_mesh_task, skeletal_mesh_task])
 
 
+def importAnimationAssets():
+    animation_fbx = "D:/WorkPlace/Scripts/BodyBlock.FBX"
+    animation_fbx_task = buildImportTask(animation_fbx, '/Game/Animations',
+                                         buildAnimationImportOptions(
+                                             '/Game/AnimStarterPack/UE4_Mannequin/Mesh/UE4_Mannequin_Skeleton.UE4_Mannequin_Skeleton'))
+    executeImportTasks([animation_fbx_task])
+
+
 # Formal transfer
 def importAssets():
     # importSimpleAssets()
-    importMeshAssets()
+    # importMeshAssets()
+    importAnimationAssets()
