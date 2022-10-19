@@ -35,7 +35,7 @@ def buildStaticMeshImportOptions():
     return options
 
 
-def buildskeletalMeshImportOptions():
+def buildSkeletalMeshImportOptions():
     options = unreal.FbxImportUI()
 
     options.set_editor_property('import_mesh', True)
@@ -91,7 +91,7 @@ def importMeshAssets():
     skeletal_mesh_path = 'D:/WorkPlace/Scripts/SK_Mannequin.FBX'
 
     static_mesh_task = buildImportTask(static_mesh_path, '/Game/StaticMeshes', buildStaticMeshImportOptions())
-    skeletal_mesh_task = buildImportTask(skeletal_mesh_path, '/Game/SkeletalMeshes', buildskeletalMeshImportOptions())
+    skeletal_mesh_task = buildImportTask(skeletal_mesh_path, '/Game/SkeletalMeshes', buildSkeletalMeshImportOptions())
 
     executeImportTasks([static_mesh_task, skeletal_mesh_task])
 
@@ -104,8 +104,57 @@ def importAnimationAssets():
     executeImportTasks([animation_fbx_task])
 
 
+# file saving
+def saveAsset(path='', force_save=True):
+    return unreal.EditorAssetLibrary.save_asset(asset_to_save=path, only_if_is_dirty=True)
+
+
+# Save the directory
+def saveDirectory(path='', force_save=True, resursive=True):
+    return unreal.EditorAssetLibrary.save_directory(directory_path=path, only_if_is_dirty=True,
+                                                    recursive=resursive)
+
+
+# Get a new package
+def getPackageFromPath(path):
+    return unreal.load_package(path)
+
+
+# Get all dirty packets
+def getAllDirtyPackages():
+    packages = []
+    for x in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages():
+        packages.append(x)
+    for x in unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages():
+        packages.append(x)
+    return packages
+
+
+# Save all dirty packets
+def saveAllDirtyPackages(show_dialog=False):
+    if show_dialog:
+        return unreal.EditorLoadingAndSavingUtils.save_dirty_packages_with_dialog(save_map_packages=True,
+                                                                                  save_content_packages=True)
+    else:
+        return unreal.EditorLoadingAndSavingUtils.save_dirty_packages(save_map_packages=True,
+                                                                      save_content_packages=True)
+
+
+# Save the package
+def savePackages(packages=None, show_dialog=False):
+    if packages is None:
+        packages = []
+    if show_dialog:
+        return unreal.EditorLoadingAndSavingUtils.save_dirty_packages_with_dialog(packages_to_save=packages,
+                                                                                  only_dirty=False)
+    else:
+        return unreal.EditorLoadingAndSavingUtils.save_dirty_packages(packages_to_save=packages,
+                                                                      only_dirty=False)
+
+
 # Formal transfer
 def importAssets():
     # importSimpleAssets()
     # importMeshAssets()
     importAnimationAssets()
+
