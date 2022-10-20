@@ -152,6 +152,9 @@ def savePackages(packages=None, show_dialog=False):
                                                                       only_dirty=False)
 
 
+new_dir = '/Game/MyNewDirectory'
+
+
 # Formal transfer
 def importAssets():
     # importSimpleAssets()
